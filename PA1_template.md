@@ -15,12 +15,13 @@ z<-ddply(x,'interval',summarise,mean(steps,na.rm=TRUE))
 ```
 
 ```r
-hist(y[,2],breaks=10)
+hist(y[,2],breaks=10,main="Frequency of Steps per Day",xlab="Total Number of Steps per Day")
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
 
 ```r
+###The average number of steps/day is
 mean(y[,2],na.rm=TRUE)
 ```
 
@@ -29,6 +30,7 @@ mean(y[,2],na.rm=TRUE)
 ```
 
 ```r
+###and the median is
 median(y[,2],na.rm=TRUE)
 ```
 
@@ -41,7 +43,7 @@ median(y[,2],na.rm=TRUE)
 ```
 
 ```r
-plot(z[,1],z[,2],type='l',ylim=c(0,200))
+plot(z[,1],z[,2],type='l',ylim=c(0,200),main="Average Number of Steps per Interval",ylab="Average Number of Steps",xlab='5 Minute Interval')
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-5-1.png) 
@@ -51,6 +53,7 @@ plot(z[,1],z[,2],type='l',ylim=c(0,200))
 ```
 
 ```r
+####the highest average number of steps in a mintue minute interval is
 z[z$..1==max(z[,2]),1]
 ```
 
@@ -65,12 +68,13 @@ for ( i in seq(1,nrow(w))) {
 
 u<-ddply(x,"date",summarise,sum(steps))
 
-hist(u[,2],breaks=10)
+hist(u[,2],breaks=10,main="Frequency of Steps per Day",xlab="Total Number of Steps per Day")
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-7-1.png) 
 
 ```r
+####The 'new' mean is
 mean(u[,2],na.rm=TRUE)
 ```
 
@@ -79,6 +83,7 @@ mean(u[,2],na.rm=TRUE)
 ```
 
 ```r
+####and the median would be
 median(u[,2],na.rm=TRUE)
 ```
 
