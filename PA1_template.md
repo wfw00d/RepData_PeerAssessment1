@@ -27,25 +27,14 @@ hist(y[,2],breaks=10,main="Frequency of Steps per Day",xlab="Total Number of Ste
 ```
 
 ![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2-1.png) 
-<br>
-The average number of steps/day is
 
 ```r
-mean(y[,2],na.rm=TRUE)
+mean<-mean(y[,2],na.rm=TRUE)
+
+median<-median(y[,2],na.rm=TRUE)
 ```
 
-```
-## [1] 10766.19
-```
-and the median is
-
-```r
-median(y[,2],na.rm=TRUE)
-```
-
-```
-## [1] 10765
-```
+The average number of steps/day is 1.0766189 &times; 10<sup>4</sup> and the median is 10765
 
 ## What is the average daily activity pattern?
 
@@ -53,29 +42,25 @@ median(y[,2],na.rm=TRUE)
 plot(z[,1],z[,2],type='l',ylim=c(0,200),main="Average Number of Steps per Interval",ylab="Average Number of Steps",xlab='5 Minute Interval')
 ```
 
-![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png) 
-<br>the highest average number of steps in a mintue minute interval is
-
+![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png) 
 
 ```r
-z[z$..1==max(z[,2]),1]
+max<-z[z$..1==max(z[,2]),2]
 ```
 
-```
-## [1] 835
-```
+the highest average number of steps in a mintue minute interval is 206.1698113
 
 ## Imputing missing values
 
-The number of missing values are:
+
 
 ```r
-nrow(x[is.na(x$steps),])
+missing<-nrow(x[is.na(x$steps),])
 ```
 
-```
-## [1] 2304
-```
+The number of missing values is 2304
+
+The values are simply changed to the average values for number of steps taken during that time interval.  The steps are not rounded to an integer value.
 
 
 ```r
@@ -88,26 +73,16 @@ u<-ddply(w,"date",summarise,sum(steps))
 hist(u[,2],breaks=10,main="Frequency of Steps per Day",xlab="Total Number of Steps per Day")
 ```
 
-![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png) 
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png) 
 
-the new mean and median are:
 
-```r
-mean(u[,2],na.rm=TRUE)
-```
-
-```
-## [1] 10766.19
-```
 
 ```r
-median(u[,2],na.rm=TRUE)
+mean2<-mean(u[,2],na.rm=TRUE)
+median2<-median(u[,2],na.rm=TRUE)
 ```
 
-```
-## [1] 10766.19
-```
-
+the new mean is 1.0766189 &times; 10<sup>4</sup> , and the new median is 1.0766189 &times; 10<sup>4</sup>
 Because the NA's were filled in with the average values, the graph and mean values go unchanged, however the median changes slightly.
 
 
@@ -132,4 +107,4 @@ plot(v[v$day=="Weekday",1],v[v$day=="Weekday",3],type="l",xlim=c(0,2355),ylim=c(
 plot(v[v$day=="Weekend",1],v[v$day=="Weekend",3],type="l",xlim=c(0,2355),ylim=c(0,210),xlab = "5 Minute Interval",ylab="Average Steps Taken",main="Average Steps on Weekends")
 ```
 
-![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10-1.png) 
+![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7-1.png) 

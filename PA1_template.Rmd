@@ -22,35 +22,33 @@ z<-ddply(x,'interval',summarise,mean(steps,na.rm=TRUE))
 y<-ddply(x,"date",summarise,sum(steps))
 
 hist(y[,2],breaks=10,main="Frequency of Steps per Day",xlab="Total Number of Steps per Day")
+
+mean<-mean(y[,2],na.rm=TRUE)
+
+median<-median(y[,2],na.rm=TRUE)
 ```
-<br>
-The average number of steps/day is
-```{r,echo=TRUE}
-mean(y[,2],na.rm=TRUE)
-```
-and the median is
-```{r,echo=TRUE}
-median(y[,2],na.rm=TRUE)
-```
+
+The average number of steps/day is `r mean` and the median is `r median`
 
 ## What is the average daily activity pattern?
 ```{r,echo=TRUE}
 plot(z[,1],z[,2],type='l',ylim=c(0,200),main="Average Number of Steps per Interval",ylab="Average Number of Steps",xlab='5 Minute Interval')
 
+max<-z[z$..1==max(z[,2]),2]
 ```
-<br>the highest average number of steps in a mintue minute interval is
 
-```{r,echo=TRUE}
-
-z[z$..1==max(z[,2]),1]
-```
+the highest average number of steps in a mintue minute interval is `r max`
 
 ## Imputing missing values
 
-The number of missing values are:
+
 ```{r}
-nrow(x[is.na(x$steps),])
+missing<-nrow(x[is.na(x$steps),])
 ```
+
+The number of missing values is `r missing`
+
+The values are simply changed to the average values for number of steps taken during that time interval.  The steps are not rounded to an integer value.
 
 ```{r}
 w<-x
@@ -62,12 +60,13 @@ u<-ddply(w,"date",summarise,sum(steps))
 hist(u[,2],breaks=10,main="Frequency of Steps per Day",xlab="Total Number of Steps per Day")
 ```
 
-the new mean and median are:
+
 ```{r}
-mean(u[,2],na.rm=TRUE)
-median(u[,2],na.rm=TRUE)
+mean2<-mean(u[,2],na.rm=TRUE)
+median2<-median(u[,2],na.rm=TRUE)
 ```
 
+the new mean is `r mean2` , and the new median is `r median2`
 Because the NA's were filled in with the average values, the graph and mean values go unchanged, however the median changes slightly.
 
 
