@@ -5,6 +5,7 @@
 
 ```r
 library(plyr)
+#x is the dataset and z is the dataset with mean values per interval calculated
 read.csv('./activity.csv',header=TRUE,colClasses=c('integer','Date','integer'))->x
 
 z<-ddply(x,'interval',summarise,mean(steps,na.rm=TRUE))
@@ -14,6 +15,7 @@ z<-ddply(x,'interval',summarise,mean(steps,na.rm=TRUE))
 ## What is mean total number of steps taken per day?
 
 ```r
+#y is the dataset with the sum of steps per day calculated
 y<-ddply(x,"date",summarise,sum(steps))
 
 hist(y[,2],breaks=10,main="Frequency of Steps per Day",xlab="Total Number of Steps per Day")
@@ -101,7 +103,7 @@ median(u[,2],na.rm=TRUE)
 ## [1] 10766.19
 ```
 
-write some information here
+Because the NA's were filled in with the average values, the graph and mean values go unchanged, however the median changes slightly.
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
@@ -119,11 +121,10 @@ u$day<-factor(u$day)
 
 v<-ddply(u,c('interval','day'),summarise,mean(steps,na.rm=TRUE))
 
-
-
 par(mfrow=c(2,1))
-plot(v[v$day=="Weekday",1],v[v$day=="Weekday",3],type="l",xlim=c(0,2355),ylim=c(0,210))
-plot(v[v$day=="Weekend",1],v[v$day=="Weekend",3],type="l",xlim=c(0,2355),ylim=c(0,210))
+
+plot(v[v$day=="Weekday",1],v[v$day=="Weekday",3],type="l",xlim=c(0,2355),ylim=c(0,210),xlab = "5 Minute Interval",ylab="Average Steps Taken",main="Average Steps on Weekdays")
+plot(v[v$day=="Weekend",1],v[v$day=="Weekend",3],type="l",xlim=c(0,2355),ylim=c(0,210),xlab = "5 Minute Interval",ylab="Average Steps Taken",main="Average Steps on Weekends")
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-10-1.png) 
