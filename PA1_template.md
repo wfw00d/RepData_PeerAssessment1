@@ -6,31 +6,33 @@
 ```r
 library(plyr)
 read.csv('./activity.csv',header=TRUE,colClasses=c('integer','Date','integer'))->x
-y<-ddply(x,"date",summarise,sum(steps))
+
 z<-ddply(x,'interval',summarise,mean(steps,na.rm=TRUE))
 ```
 
-```r
+
 ## What is mean total number of steps taken per day?
-```
 
 ```r
+y<-ddply(x,"date",summarise,sum(steps))
+
 hist(y[,2],breaks=10,main="Frequency of Steps per Day",xlab="Total Number of Steps per Day")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-2-1.png) 
+<br>
+The average number of steps/day is
 
 ```r
-###The average number of steps/day is
 mean(y[,2],na.rm=TRUE)
 ```
 
 ```
 ## [1] 10766.19
 ```
+and the median is
 
 ```r
-###and the median is
 median(y[,2],na.rm=TRUE)
 ```
 
@@ -38,22 +40,17 @@ median(y[,2],na.rm=TRUE)
 ## [1] 10765
 ```
 
-```r
 ## What is the average daily activity pattern?
-```
 
 ```r
 plot(z[,1],z[,2],type='l',ylim=c(0,200),main="Average Number of Steps per Interval",ylab="Average Number of Steps",xlab='5 Minute Interval')
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-5-1.png) 
+<br>the highest average number of steps in a mintue minute interval is
+
 
 ```r
-## Imputing missing values
-```
-
-```r
-####the highest average number of steps in a mintue minute interval is
 z[z$..1==max(z[,2]),1]
 ```
 
@@ -61,20 +58,34 @@ z[z$..1==max(z[,2]),1]
 ## [1] 835
 ```
 
+## Imputing missing values
+
+The number of missing values are:
+
+```r
+nrow(x[is.na(x$steps),])
+```
+
+```
+## [1] 2304
+```
+
+
 ```r
 w<-x
 for ( i in seq(1,nrow(w))) {
   if (is.na(w[i,1])) {w[i,1]<-z[z$interval==w[i,3],2] } }
 
-u<-ddply(x,"date",summarise,sum(steps))
+u<-ddply(w,"date",summarise,sum(steps))
 
 hist(u[,2],breaks=10,main="Frequency of Steps per Day",xlab="Total Number of Steps per Day")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-7-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-8-1.png) 
+
+the new mean and median are:
 
 ```r
-####The 'new' mean is
 mean(u[,2],na.rm=TRUE)
 ```
 
@@ -83,16 +94,36 @@ mean(u[,2],na.rm=TRUE)
 ```
 
 ```r
-####and the median would be
 median(u[,2],na.rm=TRUE)
 ```
 
 ```
-## [1] 10765
+## [1] 10766.19
 ```
+
+write some information here
+
+
+## Are there differences in activity patterns between weekdays and weekends?
+
 
 ```r
-## Are there differences in activity patterns between weekdays and weekends?
+u<-x
+
+a<-c()
+for (i in seq(1,nrow(u))) {
+  if(weekdays(u[i,2])=="Saturday" || weekdays(u[i,2])=="Sunday") {a[i]<-"Weekend"}
+  else {a[i]<-"Weekday"} }
+u$day<-a
+u$day<-factor(u$day)
+
+v<-ddply(u,c('interval','day'),summarise,mean(steps,na.rm=TRUE))
+
+
+
+par(mfrow=c(2,1))
+plot(v[v$day=="Weekday",1],v[v$day=="Weekday",3],type="l",xlim=c(0,2355),ylim=c(0,210))
+plot(v[v$day=="Weekend",1],v[v$day=="Weekend",3],type="l",xlim=c(0,2355),ylim=c(0,210))
 ```
 
-
+![](PA1_template_files/figure-html/unnamed-chunk-10-1.png) 
